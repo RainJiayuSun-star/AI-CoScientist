@@ -356,6 +356,8 @@ _PROVIDER_ENV_VARS: dict[str, str] = {
     "together":           "TOGETHER_API_KEY",
     "mistral":            "MISTRAL_API_KEY",
     "ollama":             "",   # keyless
+    "agy":                "",   # keyless (uses local agy auth)
+    "antigravity":       "",   # keyless (alias)
 }
 
 

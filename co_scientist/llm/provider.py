@@ -56,6 +56,8 @@ KNOWN_PROVIDERS = frozenset({
     "together",       # convenience preset
     "mistral",        # convenience preset
     "ollama",         # convenience preset
+    "agy",            # Antigravity CLI / SDK provider
+    "antigravity",    # alias for "agy"
 })
 
 
@@ -155,6 +157,11 @@ def get_provider(
             cfg, db=db, budget=budget, retry_policy=retry_policy,
             compat_mode=(name == "openai_compatible"),
         )
+
+    if name in ("agy", "antigravity"):
+        from .agy_client import AGYProvider
+
+        return AGYProvider(cfg, db=db, budget=budget, retry_policy=retry_policy)
 
     # Named OpenAI-compat preset (openrouter, gemini, groq, together, ...).
     preset = OPENAI_COMPAT_PRESETS.get(name)

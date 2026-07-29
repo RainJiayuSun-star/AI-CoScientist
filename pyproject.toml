@@ -58,6 +58,7 @@ dev = [
 # now in the default dependency set so the OpenAI provider works out of the
 # box.
 openai = ["openai>=1.40.0"]
+agy = ["google-antigravity>=0.1.0"]
 
 [project.scripts]
 co-scientist = "co_scientist.cli:app"
