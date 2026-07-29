@@ -93,8 +93,10 @@ This is an independent re-implementation in Python on top of pluggable LLM provi
 # Recommended: Python 3.11–3.13 (FAISS wheel availability)
 python3.12 -m venv .venv
 source .venv/bin/activate
-pip install -e ".[dev]"
+pip install -e ".[dev,agy]"
 
+# Keyless execution using local Antigravity CLI (agy):
+# No API key required if provider = "agy" is set in co-scientist.toml
 cp .env.example .env
 # fill in the API key for whichever LLM provider you'll use (see below).
 ```
@@ -160,6 +162,7 @@ Providers are listed alphabetically — none is preferred; pick whichever you ha
 
 | provider              | Endpoint                                                | API-key env var         | Example models                                            |
 | --------------------- | ------------------------------------------------------- | ----------------------- | --------------------------------------------------------- |
+| `agy` / `antigravity` | Local Antigravity CLI / SDK (`google-antigravity`)      | *(none - keyless)*      | `gemini-pro`, `gemini-flash`                              |
 | `anthropic`           | api.anthropic.com                                       | `ANTHROPIC_API_KEY`     | `claude-opus-4-7`, `claude-sonnet-4-6`                    |
 | `gemini` / `google`   | generativelanguage.googleapis.com (OpenAI-compat)       | `GEMINI_API_KEY`        | `gemini-2.5-pro`, `gemini-2.5-flash`                      |
 | `groq`                | api.groq.com                                            | `GROQ_API_KEY`          | `llama-3.3-70b-versatile`, `mixtral-8x7b-32768`           |
