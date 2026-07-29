@@ -61,12 +61,14 @@ class FaissStore:
         meta_tmp = self._meta_path.with_suffix(self._meta_path.suffix + ".tmp")
 
         def _do() -> None:
+            self._dir.mkdir(parents=True, exist_ok=True)
             faiss.write_index(self.index, str(idx_tmp))
             meta_tmp.write_text(
                 json.dumps({"dim": self.dim, "ordered_ids": self._ordered_ids})
             )
             os.replace(idx_tmp, self._index_path)
             os.replace(meta_tmp, self._meta_path)
+
 
         async with self._lock:
             await asyncio.to_thread(_do)

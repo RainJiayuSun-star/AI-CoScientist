@@ -29,8 +29,28 @@ async def connect(cfg: Config) -> aiosqlite.Connection:
     cfg.db_path.parent.mkdir(parents=True, exist_ok=True)
     conn = await aiosqlite.connect(cfg.db_path)
     conn.row_factory = aiosqlite.Row
+
+    import asyncio
+    lock = asyncio.Lock()
+    orig_commit = conn.commit
+
+    async def _locked_commit() -> None:
+        async with lock:
+            for attempt in range(5):
+                try:
+                    await orig_commit()
+                    return
+                except aiosqlite.OperationalError as e:
+                    if "statements in progress" in str(e).lower() and attempt < 4:
+                        await asyncio.sleep(0.05 * (attempt + 1))
+                    else:
+                        raise
+
+    conn.commit = _locked_commit  # type: ignore[assignment]
+
     await _apply_pragmas(conn)
     return conn
+
 
 
 async def init_db(cfg: Config) -> None:
